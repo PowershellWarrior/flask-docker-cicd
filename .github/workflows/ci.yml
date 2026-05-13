@@ -1,0 +1,73 @@
+##############################################################################
+# ci.yml
+# WHY THIS FILE EXISTS:
+#   This is your CI/CD pipeline. Every push to main automatically builds
+#   your Docker image and pushes it to Docker Hub — zero manual steps.
+#   GitHub Actions reads this file and executes it on their servers.
+##############################################################################
+
+name: CI — Build and Push Docker Image
+
+# TRIGGER
+# WHY: This pipeline runs automatically on every push to the main branch.
+#      Pull requests to main also trigger a build — catching errors before
+#      they merge into your production branch.
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+# JOBS
+# WHY: A job is a set of steps that run on the same GitHub-hosted server.
+#      Each job gets a fresh Ubuntu environment — nothing carries over
+#      between pipeline runs.
+jobs:
+  build-and-push:
+    name: Build and Push to Docker Hub
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # Step 1 — Check Out Code
+      # WHY: The pipeline server starts completely empty. This step pulls
+      #      your repository code onto the GitHub Actions server so it
+      #      has something to build from.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2 — Log In To Docker Hub
+      # WHY: You cannot push to Docker Hub without authenticating first.
+      #      Credentials are pulled from GitHub Secrets — never hardcoded.
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Step 3 — Extract Metadata
+      # WHY: Automatically generates two image tags per build —
+      #      "latest" for the most recent build and a unique SHA
+      #      tag per commit for version rollbacks.
+      - name: Extract metadata for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/flask-docker-cicd
+          tags: |
+            type=raw,value=latest
+            type=sha,prefix=sha-
+
+      # Step 4 — Build and Push Image
+      # WHY: Builds your Docker image using your Dockerfile and pushes
+      #      it to Docker Hub automatically. Only pushes on real commits
+      #      to main — not on pull request builds.
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: ${{ github.event_name == 'push' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
