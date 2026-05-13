@@ -175,19 +175,6 @@ Push to main → Build image → Push to Docker Hub → Live in ~2 minutes
 
 ---
 
-## Future Improvements
-
-- [ ] Add automated testing step to pipeline before building the image
-- [ ] Migrate to a private container registry such as AWS ECR for
-      production use
-- [ ] Add multi-stage Docker build to further reduce final image size
-- [ ] Deploy container to AWS ECS using the Terraform project as the
-      infrastructure foundation
-- [ ] Add Docker Compose for local multi-container development
-- [ ] Implement health check inside Dockerfile using `HEALTHCHECK` instruction
-
----
-
 ## License
 
 This project is licensed under the MIT License — see the
