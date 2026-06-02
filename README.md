@@ -34,12 +34,15 @@ Docker Hub on every commit — provisionable and tearable with a single command.
 Code Change in VS Code
 │
 ▼
+
 Push to GitHub (main branch)
 │
 ▼
+
 GitHub Actions triggers ci.yml
 │
 ▼
+
 ┌─────────────────────────┐
 │  Ubuntu Runner           │
 │  ├── Checkout code       │
@@ -49,9 +52,11 @@ GitHub Actions triggers ci.yml
 └─────────────────────────┘
 │
 ▼
+
 Docker Hub — powershellwarrior/flask-docker-cicd
 │
 ▼
+
 ┌─────────────────────┐
 │ Tags                │
 │ ├── latest          │
