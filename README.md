@@ -45,10 +45,15 @@ GitHub Actions triggers ci.yml
 
 ┌─────────────────────────┐
 │  Ubuntu Runner           │
+
 │  ├── Checkout code       │
+
 │  ├── Login to Docker Hub │
+
 │  ├── Generate image tags │
+
 │  └── Build & push image  │
+
 └─────────────────────────┘
 │
 ▼
@@ -59,9 +64,12 @@ Docker Hub — powershellwarrior/flask-docker-cicd
 
 ┌─────────────────────┐
 │ Tags                │
+
 │ ├── latest          │
+
 │ └── sha-xxxxxxx     │
 └─────────────────────┘
+
 
 ### File Summary
 
